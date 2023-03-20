@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Dashboard.css";
+import { EditModal } from "./EditModal";
 
 const Dashboard = () => {
   // https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json
@@ -10,7 +11,8 @@ const Dashboard = () => {
   let getData = async () => {
     await axios
       .get(
-        "https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json"
+        // "https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json"
+        "http://localhost:8080/members"
       )
       .then((res) => {
         console.log(res.data);
@@ -23,8 +25,15 @@ const Dashboard = () => {
     getData();
   }, []);
 
-  let handleEdit = (item) => {
-    
+  let handleDelete = async (item) => {
+    // console.log(item);
+    await axios
+      .delete(`http://localhost:8080/members/${item.id}`)
+      .then((res) => {
+        console.log(res.data);
+        getData()
+      })
+      .catch((e) => console.log(e));
   };
 
   return (
@@ -49,8 +58,12 @@ const Dashboard = () => {
                     <td>{item.name}</td>
                     <td>{item.email}</td>
                     <td>{item.role}</td>
-                    <p onClick={() => handleEdit(item)}>📝</p>
-                    <p>❌</p>
+                    <p>
+                      <EditModal item={item} getData={getData} />
+
+                      {/* <NewModal item={item} /> */}
+                    </p>
+                    <p onClick={() => handleDelete(item)}>❌</p>
                   </tr>
                 </>
               );
