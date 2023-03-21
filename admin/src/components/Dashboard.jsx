@@ -3,13 +3,14 @@ import axios from "axios";
 import "./Dashboard.css";
 import { EditModal } from "./EditModal";
 import { NewModal } from "./NewModal";
-import ReactPaginate from "react-paginate"
+import ReactPaginate from "react-paginate";
 
 const Dashboard = () => {
   // https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json
 
   let [users, setUsers] = useState();
   const [currPage, setCurrPage] = useState(0);
+  let [search, setSearch] = useState("");
 
   let getData = async () => {
     await axios
@@ -34,14 +35,14 @@ const Dashboard = () => {
     await axios
       .delete(`http://localhost:8080/members/${item.id}`)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         getData();
       })
       .catch((e) => console.log(e));
   };
 
   //---------- pagination -----------------
-  const perpage = 8;
+  const perpage = 10;
   let handleFetch = ({ selected: selectedPage }) => {
     setCurrPage(selectedPage);
   };
@@ -52,6 +53,11 @@ const Dashboard = () => {
     <>
       <div>
         <h5>Admin Dashboard</h5>
+        <input
+          type="text"
+          placeholder="Search by name"
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <table>
           <thead>
             <tr>
@@ -62,26 +68,31 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {users?.slice(offset, offset + perpage).map((item, index) => {
-              return (
-                <>
-                  <tr key={index}>
-                    <input type="checkbox" />
-                    <td>{item.name}</td>
-                    <td>{item.email}</td>
-                    <td>{item.role}</td>
-                    <div className="edit_delete_div">
-                      <p>
-                        <EditModal item={item} getData={getData} />
+            {users
+              ?.filter((el) => {
+                return el.name.toLowerCase().includes(search.toLowerCase());
+              })
+              .slice(offset, offset + perpage)
+              .map((item, index) => {
+                return (
+                  <>
+                    <tr key={index}>
+                      <input type="checkbox" />
+                      <td>{item.name}</td>
+                      <td>{item.email}</td>
+                      <td>{item.role}</td>
+                      <div className="edit_delete_div">
+                        <p>
+                          <EditModal item={item} getData={getData} />
 
-                        {/* <NewModal item={item} /> */}
-                      </p>
-                      <p onClick={() => handleDelete(item)}>❌</p>
-                    </div>
-                  </tr>
-                </>
-              );
-            })}
+                          {/* <NewModal item={item} /> */}
+                        </p>
+                        <p onClick={() => handleDelete(item)}>❌</p>
+                      </div>
+                    </tr>
+                  </>
+                );
+              })}
           </tbody>
         </table>
         <ReactPaginate
