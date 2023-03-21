@@ -9,8 +9,10 @@ const Dashboard = () => {
   // https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json
 
   let [users, setUsers] = useState();
-  const [currPage, setCurrPage] = useState(0);
+  // const [currPage, setCurrPage] = useState(0);
   let [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   let getData = async () => {
     await axios
@@ -42,13 +44,35 @@ const Dashboard = () => {
   };
 
   //---------- pagination -----------------
-  const perpage = 10;
-  let handleFetch = ({ selected: selectedPage }) => {
-    setCurrPage(selectedPage);
+  // const perpage = 10;
+  // let handleFetch = ({ selected: selectedPage }) => {
+  //   setCurrPage(selectedPage);
+  // };
+
+  // const pageCount = Math.ceil(users?.length / perpage);
+  // const offset = currPage * perpage; //offset = 0, 10, 20......
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
 
-  const pageCount = Math.ceil(users?.length / perpage);
-  const offset = currPage * perpage; //offset = 0, 10, 20......
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = users?.slice(indexOfFirstItem, indexOfLastItem);
+
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(users?.length / itemsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
+  let selectedItems = [];
+
+  let handleSelect = (item) => {
+    selectedItems.push(item);
+    console.log(selectedItems);
+  };
+
+  let handleDeleteAll = () => {};
+
   return (
     <>
       <div>
@@ -68,16 +92,19 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {users
+            {currentItems
               ?.filter((el) => {
                 return el.name.toLowerCase().includes(search.toLowerCase());
               })
-              .slice(offset, offset + perpage)
+              // .slice(offset, offset + perpage)
               .map((item, index) => {
                 return (
                   <>
                     <tr key={index}>
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        onChange={() => handleSelect(item)}
+                      />
                       <td>{item.name}</td>
                       <td>{item.email}</td>
                       <td>{item.role}</td>
@@ -95,7 +122,20 @@ const Dashboard = () => {
               })}
           </tbody>
         </table>
-        <ReactPaginate
+        <button onClick={handleDeleteAll}>Delete selected</button>
+        <div>
+          <ul>
+            {pageNumbers.map((pageNumber) => (
+              <li key={pageNumber}>
+                <button onClick={() => paginate(pageNumber)}>
+                  {pageNumber}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* <ReactPaginate
           previousLabel={"<- Prev"}
           nextLabel={"Next ->"}
           pageCount={pageCount}
@@ -105,7 +145,7 @@ const Dashboard = () => {
           nextLinkClassName={"pagination__link"}
           disabledClassName={"pagination_link_disabled"}
           activeClassName={"pagination_link_active"}
-        />
+        /> */}
       </div>
     </>
   );
