@@ -4,6 +4,7 @@ import "./Dashboard.css";
 import { EditModal } from "./EditModal";
 import { NewModal } from "./NewModal";
 import ReactPaginate from "react-paginate";
+import { Button } from "antd";
 
 const Dashboard = () => {
   // https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json
@@ -13,7 +14,7 @@ const Dashboard = () => {
   let [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [filterData, setFilterData] = useState();
+  const [selectedItems, setSelectedItems] = useState([]);
 
   let getData = async () => {
     await axios
@@ -65,10 +66,20 @@ const Dashboard = () => {
     pageNumbers.push(i);
   }
 
-  let selectedItems = [];
-
-  let handleSelect = (item) => {
-    selectedItems.push(item);
+  // let selectedItems = [];
+  // let handleSelect = (item) => {
+  //   selectedItems.push(item);
+  //   console.log(selectedItems);
+  // };
+  const handleCheckboxChange = (event, item) => {
+    if (event.target.checked) {
+      setSelectedItems([...selectedItems, item]);
+      // selectedItems.push(item)
+    } else {
+      setSelectedItems(
+        selectedItems.filter((selectedItem) => selectedItem !== item)
+      );
+    }
     console.log(selectedItems);
   };
 
@@ -114,7 +125,9 @@ const Dashboard = () => {
                     <tr key={index}>
                       <input
                         type="checkbox"
-                        onChange={() => handleSelect(item)}
+                        checked={selectedItems.includes(item)}
+                        // onChange={() => handleSelect(item)}
+                        onChange={(event) => handleCheckboxChange(event, item)}
                       />
                       <td>{item.name}</td>
                       <td>{item.email}</td>
@@ -133,7 +146,9 @@ const Dashboard = () => {
               })}
           </tbody>
         </table>
-        <button onClick={handleDeleteAll}>Delete selected</button>
+        <Button type="primary" danger onClick={handleDeleteAll}>
+          Delete selected
+        </Button>
         <div>
           <ul>
             {pageNumbers.map((pageNumber) => (
