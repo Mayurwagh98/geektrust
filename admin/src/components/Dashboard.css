@@ -69,7 +69,7 @@ table {
     display: flex;
     /* border: 1px solid red; */
     justify-content: space-between;
-    width: 35%;
+    width: 40%;
     margin: 20px 0 0 300px;
 }
 
@@ -81,7 +81,7 @@ table {
     padding: 10px;
     margin: 0 0 0 10px;
     border-radius: 20px;
-    background-color: #443C68;
+    background-color: #7149C6;
     color: white;
     font-weight: bold;
     border: none;

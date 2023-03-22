@@ -1,6 +1,5 @@
 import { Button, Modal, Tooltip, Input } from "antd";
 import { useState } from "react";
-
 import axios from "axios";
 import { EditFilled } from "@ant-design/icons";
 import "./NewModal.css";
@@ -13,13 +12,11 @@ const EditModal = ({ item, getData }) => {
     role: "",
   });
 
-  const { TextArea } = Input;
-
   let updateMembers = async () => {
     await axios
       .patch(`http://localhost:8080/members/${item.id}`, updateText)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         // alert(res.data.message);
         // setUpdateText(res.data)
         getData();
@@ -49,12 +46,13 @@ const EditModal = ({ item, getData }) => {
   return (
     <>
       <Tooltip title="Edit" color="red">
-        <Button type="primary" onClick={showModal}>
-          <EditFilled />
+        <Button onClick={showModal}>
+          {/* <EditFilled /> */}
+          📝
         </Button>
       </Tooltip>
       <Modal
-        title="Update the blog"
+        title="Update"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}

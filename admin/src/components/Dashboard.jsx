@@ -72,7 +72,7 @@ const Dashboard = () => {
   for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
-
+  // ------- first and last page --------------------
   let handleFirstLast = (sign) => {
     if (sign == "f") {
       setCurrentPage(1);
@@ -80,7 +80,7 @@ const Dashboard = () => {
       setCurrentPage(totalPages);
     }
   };
-
+  // ------- next and prev page --------------------
   let handleNextPrev = (sign) => {
     if (sign == "+") {
       setCurrentPage((prev) => prev + 1);
@@ -193,11 +193,13 @@ const Dashboard = () => {
             Delete selected
           </Button>
           <div>
+            {/* ------- first page ------------- */}
             {currentPage != 1 && (
               <button onClick={() => handleFirstLast("f")}>
                 <DoubleLeftOutlined />
               </button>
             )}
+            {/* ------- previous page ------------- */}
 
             {currentPage != 1 && ( // to hide the button when page == 1
               <button onClick={() => handleNextPrev("-")}>
@@ -208,11 +210,16 @@ const Dashboard = () => {
             {pageNumbers.map((pageNumber) => (
               <button onClick={() => paginate(pageNumber)}>{pageNumber}</button>
             ))}
+
+            {/* ------- next page ------------- */}
+
             {currentPage != totalPages && ( // to hide the button when page == 5
               <button onClick={() => handleNextPrev("+")}>
                 <RightOutlined />
               </button>
             )}
+            {/* ------- last page ------------- */}
+
             {currentPage != totalPages && (
               <button onClick={() => handleFirstLast("l")}>
                 <DoubleRightOutlined />
