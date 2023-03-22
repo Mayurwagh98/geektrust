@@ -13,6 +13,7 @@ const Dashboard = () => {
   let [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [filterData, setFilterData] = useState();
 
   let getData = async () => {
     await axios
@@ -71,7 +72,17 @@ const Dashboard = () => {
     console.log(selectedItems);
   };
 
-  let handleDeleteAll = () => {};
+  let handleDeleteAll = async () => {
+    for (let x of selectedItems) {
+      await axios
+        .delete(`http://localhost:8080/members/${x.id}`)
+        .then((res) => {
+          // console.log(res.data);
+          getData();
+        })
+        .catch((e) => console.log(e));
+    }
+  };
 
   return (
     <>
