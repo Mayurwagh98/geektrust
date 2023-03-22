@@ -5,7 +5,12 @@ import { EditModal } from "./EditModal";
 import { NewModal } from "./NewModal";
 import ReactPaginate from "react-paginate";
 import { Button } from "antd";
-
+import {
+  DoubleLeftOutlined,
+  DoubleRightOutlined,
+  LeftOutlined,
+  RightOutlined,
+} from "@ant-design/icons";
 const Dashboard = () => {
   // https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json
 
@@ -61,11 +66,20 @@ const Dashboard = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = users?.slice(indexOfFirstItem, indexOfLastItem);
+  let totalPages = Math.ceil(users?.length / itemsPerPage);
 
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(users?.length / itemsPerPage); i++) {
+  for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
+
+  let handleFirstLast = (sign) => {
+    if (sign == "f") {
+      setCurrentPage(1);
+    } else {
+      setCurrentPage(totalPages);
+    }
+  };
 
   let handleNextPrev = (sign) => {
     if (sign == "+") {
@@ -179,15 +193,30 @@ const Dashboard = () => {
             Delete selected
           </Button>
           <div>
+            {currentPage != 1 && (
+              <button onClick={() => handleFirstLast("f")}>
+                <DoubleLeftOutlined />
+              </button>
+            )}
+
             {currentPage != 1 && ( // to hide the button when page == 1
-              <button onClick={() => handleNextPrev("-")}>Prev</button>
+              <button onClick={() => handleNextPrev("-")}>
+                <LeftOutlined />
+              </button>
             )}
 
             {pageNumbers.map((pageNumber) => (
               <button onClick={() => paginate(pageNumber)}>{pageNumber}</button>
             ))}
-            {currentPage != 5 && ( // to hide the button when page == 5
-              <button onClick={() => handleNextPrev("+")}>Next</button>
+            {currentPage != totalPages && ( // to hide the button when page == 5
+              <button onClick={() => handleNextPrev("+")}>
+                <RightOutlined />
+              </button>
+            )}
+            {currentPage != totalPages && (
+              <button onClick={() => handleFirstLast("l")}>
+                <DoubleRightOutlined />
+              </button>
             )}
           </div>
         </div>
