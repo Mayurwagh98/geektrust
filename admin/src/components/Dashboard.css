@@ -1,18 +1,21 @@
-table{
+table {
     /* border: 1px solid red; */
     width: 90%;
     margin: auto;
     text-align: center;
 }
-.edit_delete_div{
+
+.edit_delete_div {
     display: flex;
-    
+
 }
-.edit_delete_div > Button{
+
+.edit_delete_div>Button {
     /* border: 1px solid red; */
     /* margin: 0 0 0 3rem; */
     padding: 0 0 0 3rem;
 }
+
 /* pagination */
 .pagination {
     width: 85%;
@@ -61,22 +64,39 @@ table{
     border: 1px solid rgb(198, 197, 202);
 
 }
-.delete_page_btn_div{
+
+.delete_page_btn_div {
     display: flex;
     /* border: 1px solid red; */
     justify-content: space-between;
-    width: 30%;
+    width: 35%;
     margin: 20px 0 0 300px;
 }
-.delete_page_btn_div > div{
+
+.delete_page_btn_div>div {
     margin: 0 0 0 2rem;
 }
-.delete_page_btn_div > div > button{
-    padding: 5px;
+
+.delete_page_btn_div>div>button {
+    padding: 10px;
     margin: 0 0 0 10px;
+    border-radius: 20px;
+    background-color: #443C68;
+    color: white;
+    font-weight: bold;
+    border: none;
 }
-.search{
-    padding: 0.5rem;
-    width: 70%;
+
+.delete_page_btn_div>div>button:active {
+    background-color: red;
+}
+
+.search {
+    padding: 0.7rem;
+    width: 60%;
+    border-radius: 10px;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-color: rgb(212, 208, 208);
     margin: 0 0 0.6rem 0;
 }
