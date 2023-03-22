@@ -34,7 +34,7 @@ const Dashboard = () => {
     getData();
   }, []);
 
-  // ---------------- delete
+  // ---------------- delete ------------------
   let handleDelete = async (item) => {
     // console.log(item);
     await axios
@@ -67,6 +67,14 @@ const Dashboard = () => {
     pageNumbers.push(i);
   }
 
+  let handleNextPrev = (sign) => {
+    if (sign == "+") {
+      setCurrentPage((prev) => prev + 1);
+    } else {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
   // -------------- checkbox -------------------
   const handleCheckboxChange = (event, item) => {
     if (event.target.checked) {
@@ -96,7 +104,7 @@ const Dashboard = () => {
   // ----------------------- selected rows grayish ----------------------
   let handleSelectedRows = (index) => {
     if (selectedRows.includes(index)) {
-      setSelectedRows(selectedRows.filter((i) => i !== index));
+      setSelectedRows(selectedRows.filter((i) => i !== index)); // if clicked the same row again, it will be deselect
     } else {
       setSelectedRows(selectedRows.concat(index));
     }
@@ -116,10 +124,10 @@ const Dashboard = () => {
           <thead>
             <tr>
               <th></th>
-              <th>name</th>
-              <th>email</th>
-              <th>role</th>
-              <th>action</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -133,8 +141,6 @@ const Dashboard = () => {
                   <>
                     <tr
                       key={index}
-                      // onClick={() => setSelectedRow(item)}
-                      // className={selectedRow === item ? "highlighted" : null}
                       onClick={() => handleSelectedRows(index)}
                       style={{
                         backgroundColor: selectedRows.includes(index)
@@ -173,9 +179,16 @@ const Dashboard = () => {
             Delete selected
           </Button>
           <div>
+            {currentPage != 1 && ( // to hide the button when page == 1
+              <button onClick={() => handleNextPrev("-")}>Prev</button>
+            )}
+
             {pageNumbers.map((pageNumber) => (
               <button onClick={() => paginate(pageNumber)}>{pageNumber}</button>
             ))}
+            {currentPage != 5 && ( // to hide the button when page == 5
+              <button onClick={() => handleNextPrev("+")}>Next</button>
+            )}
           </div>
         </div>
 
