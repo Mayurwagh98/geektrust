@@ -1,3 +1,82 @@
 table{
-    border: 1px solid red;
+    /* border: 1px solid red; */
+    width: 90%;
+    margin: auto;
+    text-align: center;
+}
+.edit_delete_div{
+    display: flex;
+    
+}
+.edit_delete_div > Button{
+    /* border: 1px solid red; */
+    /* margin: 0 0 0 3rem; */
+    padding: 0 0 0 3rem;
+}
+/* pagination */
+.pagination {
+    width: 85%;
+    margin: auto;
+    padding-bottom: 3%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* border: 1px solid red; */
+    list-style: none;
+    cursor: pointer;
+    overflow: scroll;
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+
+.pagination a {
+    padding: 11px;
+    /* border-radius: 5px; */
+    border: none;
+    color: #3C2A21;
+    font-weight: bold;
+    font-size: 17px;
+    background-color: #fff;
+    margin: 5px;
+    margin-top: 10px;
+    display: grid;
+    place-content: center;
+    /* border: 1px solid red; */
+    border-radius: 10px;
+    height: 10px;
+}
+
+.pagination__link {
+    font-weight: bold;
+}
+
+.pagination_link_active a {
+    color: #fff;
+    background-color: #47a7de;
+
+}
+
+.pagination_link_disabled a {
+    color: rgb(198, 197, 202);
+    border: 1px solid rgb(198, 197, 202);
+
+}
+.delete_page_btn_div{
+    display: flex;
+    /* border: 1px solid red; */
+    justify-content: space-between;
+    width: 30%;
+    margin: 20px 0 0 300px;
+}
+.delete_page_btn_div > div{
+    margin: 0 0 0 2rem;
+}
+.delete_page_btn_div > div > button{
+    padding: 5px;
+    margin: 0 0 0 10px;
+}
+.search{
+    padding: 0.5rem;
+    width: 70%;
+    margin: 0 0 0.6rem 0;
 }
