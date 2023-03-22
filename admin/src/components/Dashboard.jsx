@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "./Dashboard.css";
 import { EditModal } from "./EditModal";
@@ -15,6 +15,7 @@ const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
 
   let getData = async () => {
     await axios
@@ -66,11 +67,7 @@ const Dashboard = () => {
     pageNumbers.push(i);
   }
 
-  // let selectedItems = [];
-  // let handleSelect = (item) => {
-  //   selectedItems.push(item);
-  //   console.log(selectedItems);
-  // };
+  // -------------- checkbox -------------------
   const handleCheckboxChange = (event, item) => {
     if (event.target.checked) {
       setSelectedItems([...selectedItems, item]);
@@ -83,6 +80,7 @@ const Dashboard = () => {
     console.log(selectedItems);
   };
 
+  // ------------------ selected rows delete -------------------
   let handleDeleteAll = async () => {
     for (let x of selectedItems) {
       await axios
@@ -95,6 +93,15 @@ const Dashboard = () => {
     }
   };
 
+  // ----------------------- selected rows grayish ----------------------
+  let handleSelectedRows = (index) => {
+    if (selectedRows.includes(index)) {
+      setSelectedRows(selectedRows.filter((i) => i !== index));
+    } else {
+      setSelectedRows(selectedRows.concat(index));
+    }
+  };
+
   return (
     <>
       <div>
@@ -103,10 +110,12 @@ const Dashboard = () => {
           type="text"
           placeholder="Search by name"
           onChange={(e) => setSearch(e.target.value)}
+          className="search"
         />
         <table>
           <thead>
             <tr>
+              <th></th>
               <th>name</th>
               <th>email</th>
               <th>role</th>
@@ -122,23 +131,36 @@ const Dashboard = () => {
               .map((item, index) => {
                 return (
                   <>
-                    <tr key={index}>
-                      <input
-                        type="checkbox"
-                        checked={selectedItems.includes(item)}
-                        // onChange={() => handleSelect(item)}
-                        onChange={(event) => handleCheckboxChange(event, item)}
-                      />
+                    <tr
+                      key={index}
+                      // onClick={() => setSelectedRow(item)}
+                      // className={selectedRow === item ? "highlighted" : null}
+                      onClick={() => handleSelectedRows(index)}
+                      style={{
+                        backgroundColor: selectedRows.includes(index)
+                          ? "lightgrey"
+                          : null,
+                      }}
+                    >
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={selectedItems.includes(item)}
+                          // onChange={() => handleSelect(item)}
+                          onChange={(event) =>
+                            handleCheckboxChange(event, item)
+                          }
+                        />
+                      </td>
                       <td>{item.name}</td>
                       <td>{item.email}</td>
                       <td>{item.role}</td>
                       <div className="edit_delete_div">
-                        <p>
-                          <EditModal item={item} getData={getData} />
+                        <EditModal item={item} getData={getData} />
 
-                          {/* <NewModal item={item} /> */}
-                        </p>
-                        <p onClick={() => handleDelete(item)}>❌</p>
+                        {/* <NewModal item={item} /> */}
+
+                        <Button onClick={() => handleDelete(item)}>❌</Button>
                       </div>
                     </tr>
                   </>
@@ -146,19 +168,15 @@ const Dashboard = () => {
               })}
           </tbody>
         </table>
-        <Button type="primary" danger onClick={handleDeleteAll}>
-          Delete selected
-        </Button>
-        <div>
-          <ul>
+        <div className="delete_page_btn_div">
+          <Button type="primary" danger onClick={handleDeleteAll}>
+            Delete selected
+          </Button>
+          <div>
             {pageNumbers.map((pageNumber) => (
-              <li key={pageNumber}>
-                <button onClick={() => paginate(pageNumber)}>
-                  {pageNumber}
-                </button>
-              </li>
+              <button onClick={() => paginate(pageNumber)}>{pageNumber}</button>
             ))}
-          </ul>
+          </div>
         </div>
 
         {/* <ReactPaginate
