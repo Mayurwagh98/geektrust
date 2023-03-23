@@ -1,0 +1,16 @@
+.main_products_div {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    width: 90%;
+    margin: auto;
+}
+.main_products_div > div{
+    /* border: 1px solid red; */
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 1rem;
+}
+.main_products_div > div > img{
+    width: 100%;
+
+}
