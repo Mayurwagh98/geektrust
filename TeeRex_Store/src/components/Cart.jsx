@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from "react";
 import "./Cart.css";
-import { Button } from "antd";
+import { Button, message, Space } from "antd";
 import axios from "axios";
 
 const Cart = () => {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   let [cartItems, setCartItems] = useState(cart);
   console.log(cartItems);
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const warning = () => {
+    messageApi.open({
+      type: "warning",
+      content: "Out of Stock",
+    });
+  };
 
   let handleQty = (sign, item) => {
     let qty;
     if (sign == "+") {
       if (item.qty == item.quantity) {
-        return alert("Out of Stock");
+        return warning();
       }
       qty = ++item.qty;
       item = { ...item, qty };
@@ -38,6 +46,8 @@ const Cart = () => {
 
   return (
     <>
+      {contextHolder}
+
       <h2>Total:-{sum}</h2>
       <div className="main_cart_div">
         {cartItems.map((item, index) => {
