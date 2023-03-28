@@ -11,10 +11,10 @@ const Cart = () => {
   let handleQty = (sign, item) => {
     let qty;
     if (sign == "+") {
-      qty = ++item.qty;
-      if (qty > item.quantity) {
+      if (item.qty == item.quantity) {
         return alert("Out of Stock");
       }
+      qty = ++item.qty;
       item = { ...item, qty };
     } else {
       qty = --item.qty;
