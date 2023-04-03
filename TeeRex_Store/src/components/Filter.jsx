@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 
-const Filter = ({ setProducts }) => {
+const Filter = () => {
   let [selected, setSelected] = useState(null);
   let [searchParams, setSearchParams] = useSearchParams();
   let [category, setCategory] = useState(searchParams.getAll("color") || []);
@@ -40,7 +40,6 @@ const Filter = ({ setProducts }) => {
     let option = event.target.value;
     //logic --> if the option is present in the category array, remove it,
     //else add it to the category array
-
     let newCategory = [...category]; //making the copy of the category
     if (newCategory.includes(option)) {
       //remove it
@@ -54,7 +53,8 @@ const Filter = ({ setProducts }) => {
   console.log(category);
 
   useEffect(() => {
-    //used useEffect because every time user clicks on filter, search param should change and DOM should re-render
+    //used useEffect because every time user clicks on filter, 
+    // search param should change and DOM should re-render
     let params = {};
     category && (params.color = category);
     setSearchParams(params);
@@ -67,8 +67,8 @@ const Filter = ({ setProducts }) => {
         <input
           type="checkbox"
           value="Black"
-          // checked={selected === "Black"}
-          defaultChecked={category.includes("Black")} // allowing user to select only one checkbox
+          // checked={selected === "Black"} // allowing user to select only one checkbox
+          defaultChecked={category.includes("Black")} 
           onChange={handleFilter}
         />
         <label>Black</label>
@@ -103,14 +103,14 @@ const Filter = ({ setProducts }) => {
         <input
           type="checkbox"
           value="Men"
-          checked={selected === "Men"} // allowing user to select only one checkbox
+          // checked={selected === "Men"} // allowing user to select only one checkbox
           onChange={handleFilter}
         />
         <label>Men</label>
         <input
           type="checkbox"
           value="Women"
-          checked={selected === "Women"} // allowing user to select only one checkbox
+          // checked={selected === "Women"} // allowing user to select only one checkbox
           onChange={handleFilter}
         />
         <label>Women</label>
